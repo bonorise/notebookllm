@@ -49,8 +49,8 @@ def nblm_with_retry(*args, max_retries=3, timeout=900):
             rc, stdout, stderr = nblm(*args, timeout=timeout)
             if rc == 0:
                 return rc, stdout, stderr
-            if "rate" in stderr.lower() or "limit" in stderr.lower():
-                wait = (attempt + 1) * 30
+            if "rate" in stderr.lower() or "limit" in stderr.lower() or "RATE_LIMITED" in stdout:
+                wait = (attempt + 1) * 300
                 print(f"    ⏳ 速率限制，等待 {wait}s...")
                 time.sleep(wait)
                 continue
