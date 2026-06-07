@@ -4,6 +4,7 @@
 import argparse
 import json
 import os
+import shutil
 import signal
 import sqlite3
 import subprocess
@@ -30,6 +31,22 @@ def signal_handler(sig, frame):
     interrupted = True
 
 signal.signal(signal.SIGINT, signal_handler)
+
+# ============================================================
+# 工具函数
+# ============================================================
+
+def ensure_output_dir(base_name):
+    """创建书籍输出子目录，若 PDF 在 PDF_DIR 根目录则移入"""
+    output_dir = PDF_DIR / base_name
+    output_dir.mkdir(parents=True, exist_ok=True)
+    pdf_in_root = PDF_DIR / f"{base_name}.pdf"
+    if pdf_in_root.exists():
+        target = output_dir / f"{base_name}.pdf"
+        if not target.exists():
+            shutil.move(str(pdf_in_root), str(target))
+    return output_dir
+
 
 # ============================================================
 # NotebookLM CLI 包装
@@ -510,8 +527,7 @@ def cmd_generate(args):
         ebook_path = row[4]
 
         base_name = Path(ebook_path).stem if ebook_path else notebook_title
-        output_dir = PDF_DIR / base_name
-        output_dir.mkdir(parents=True, exist_ok=True)
+        output_dir = ensure_output_dir(base_name)
 
         # 获取该书的模型列表
         models = chosen_models if chosen_models else get_models_for_book(notebook_title, prompts_config)
@@ -653,8 +669,7 @@ def cmd_infographic(args):
         ebook_path = row[4]
 
         base_name = Path(ebook_path).stem if ebook_path else notebook_title
-        output_dir = PDF_DIR / base_name
-        output_dir.mkdir(parents=True, exist_ok=True)
+        output_dir = ensure_output_dir(base_name)
 
         print(f"📖 {notebook_title}")
 
@@ -767,8 +782,7 @@ def cmd_mindmap(args):
         ebook_path = row[4]
 
         base_name = Path(ebook_path).stem if ebook_path else notebook_title
-        output_dir = PDF_DIR / base_name
-        output_dir.mkdir(parents=True, exist_ok=True)
+        output_dir = ensure_output_dir(base_name)
         output_path = output_dir / f"{base_name}_思维导图.json"
 
         if output_path.exists() and not args.force:
@@ -883,8 +897,7 @@ def cmd_slides(args):
         ebook_path = row[4]
 
         base_name = Path(ebook_path).stem if ebook_path else notebook_title
-        output_dir = PDF_DIR / base_name
-        output_dir.mkdir(parents=True, exist_ok=True)
+        output_dir = ensure_output_dir(base_name)
 
         print(f"📖 {notebook_title}")
 
@@ -992,8 +1005,7 @@ def cmd_flashcards(args):
         ebook_path = row[4]
 
         base_name = Path(ebook_path).stem if ebook_path else notebook_title
-        output_dir = PDF_DIR / base_name
-        output_dir.mkdir(parents=True, exist_ok=True)
+        output_dir = ensure_output_dir(base_name)
         output_path = output_dir / f"{base_name}_闪卡.md"
 
         if output_path.exists() and not args.force:
@@ -1080,8 +1092,7 @@ def cmd_quiz(args):
         ebook_path = row[4]
 
         base_name = Path(ebook_path).stem if ebook_path else notebook_title
-        output_dir = PDF_DIR / base_name
-        output_dir.mkdir(parents=True, exist_ok=True)
+        output_dir = ensure_output_dir(base_name)
 
         print(f"📖 {notebook_title}")
 
