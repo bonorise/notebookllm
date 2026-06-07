@@ -437,7 +437,7 @@ def generate_report(conn, notebook_id, notebook_title, model_key, prompt, downlo
         "download", "report", str(download_path),
         "--notebook", notebook_id,
         "--latest",
-        timeout=120,
+        timeout=180,
     )
 
     if rc == 0:
@@ -717,7 +717,7 @@ def cmd_infographic(args):
                 "download", "infographic", str(output_path),
                 "--notebook", notebook_id,
                 "--artifact", artifact_id,
-                timeout=120,
+                timeout=180,
             )
 
             if rc == 0:
@@ -799,7 +799,7 @@ def cmd_mindmap(args):
             "download", "mind-map", str(output_path),
             "--notebook", notebook_id,
             "--artifact", artifact_id,
-            timeout=120,
+            timeout=180,
         )
 
         if rc == 0:
@@ -943,7 +943,7 @@ def cmd_slides(args):
                 "--notebook", notebook_id,
                 "--artifact", artifact["id"],
                 "--format", "pptx",
-                timeout=120,
+                timeout=300,
             )
 
             if rc == 0:
@@ -1019,7 +1019,7 @@ def cmd_flashcards(args):
             continue
 
         print("轮询中...", end=" ", flush=True)
-        artifact = poll_artifact_complete(notebook_id, "flashcards", before_count, max_wait=600)
+        artifact = poll_artifact_complete(notebook_id, "flashcard", before_count, max_wait=600)
 
         if not artifact:
             print("❌ 超时")
@@ -1032,7 +1032,7 @@ def cmd_flashcards(args):
             "--notebook", notebook_id,
             "--artifact", artifact["id"],
             "--format", "markdown",
-            timeout=120,
+            timeout=180,
         )
 
         if rc == 0:
@@ -1131,7 +1131,7 @@ def cmd_quiz(args):
                 "--notebook", notebook_id,
                 "--artifact", artifact["id"],
                 "--format", "markdown",
-                timeout=120,
+                timeout=180,
             )
 
             if rc == 0:
