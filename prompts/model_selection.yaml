@@ -1,0 +1,129 @@
+# 按书籍名称自适应选择阅读分析模型
+# 说明：batch_generate.py 会优先读取本文件，再从 reading_models/ 目录加载各模型 prompt。
+
+model_policy:
+  default_min_models: 3
+  default_max_models: 4
+  always_include:
+    - structure_quick
+  fallback_models:
+    - structure_quick
+    - concept
+    - blindspot
+  avoid_together:
+    # model03 和 model06 都是结构地图类，默认避免同时选择，除非手动 --all-models
+    - [structure, structure_quick]
+
+models:
+  axiom:
+    number: "01"
+    label: "公理化逻辑审计"
+    file: "model01-axiom-logic-audit.md"
+    suffix: "_公理化逻辑审计.md"
+    best_for: "学术类、思想类、理论类、强论证和争议性观点类书籍；用于审查作者论证是否严密。"
+    infographic_prompt: "基于公理化逻辑审计视角，提取本书核心假设、公理命题、推导链条、逻辑断点和稳健结论。信息图，中文，清晰结构化。"
+    slide_prompt: "基于公理化逻辑审计视角创建演示文稿，呈现核心前提、公理、推导链、结论审计和逻辑强弱点。"
+
+  bayes:
+    number: "02"
+    label: "贝叶斯认知更新"
+    file: "model02-bayesian-cognitive-update.md"
+    suffix: "_贝叶斯认知更新.md"
+    best_for: "反常识、科学、商业、社会观察、认知刷新类书籍；用于判断读后应如何更新原有信念。"
+    infographic_prompt: "基于贝叶斯认知更新视角，展示先验信念、异常信号、新证据、似然比较和后验更新。信息图，中文，层层推进。"
+    slide_prompt: "基于贝叶斯认知更新视角创建演示文稿，围绕旧信念、新证据、似然比较、信念更新表和后续验证假设展开。"
+
+  structure:
+    number: "03"
+    label: "全书结构地图"
+    file: "model03-book-structure-map.md"
+    suffix: "_全书结构地图.md"
+    best_for: "几乎所有非虚构书；用于细致还原全书骨架、章节功能和论证推进路线。"
+    infographic_prompt: "基于全书结构地图视角，展示中心问题、章节功能、核心概念网络和论证推进路线。信息图，中文，知识地图风格。"
+    slide_prompt: "基于全书结构地图视角创建演示文稿，呈现全书中心问题、主干结构、章节功能、概念网络和阅读路径。"
+
+  first_principles:
+    number: "04"
+    label: "第一性原理重建"
+    file: "model04-first-principles-reconstruction.md"
+    suffix: "_第一性原理重建.md"
+    best_for: "商业、科技、战略、创新、组织、方法论和社会问题类书籍；用于拆到底层事实后重新推导新框架。"
+    infographic_prompt: "基于第一性原理重建视角，展示路径依赖、基本事实、重新定义问题、最小解释模型和新方案。信息图，中文。"
+    slide_prompt: "基于第一性原理重建视角创建演示文稿，展示作者框架、底层事实、重新定义、从零重建框架和新洞察。"
+
+  dialectic:
+    number: "05"
+    label: "黑格尔辩证思辨"
+    file: "model05-hegelian-dialectics.md"
+    suffix: "_黑格尔辩证思辨.md"
+    best_for: "哲学、政治、文化、社会思想、价值冲突明显的书；用于分析正题、反题、合题和思想张力。"
+    infographic_prompt: "基于黑格尔辩证思辨视角，展示作者正题、最强反题、正反冲突、合题和不可调和张力。信息图，中文。"
+    slide_prompt: "基于黑格尔辩证思辨视角创建演示文稿，围绕正题、反题、交锋、合题和终极辩证问题展开。"
+
+  structure_quick:
+    number: "06"
+    label: "全书知识地图"
+    file: "model06-book-structure-map.md"
+    suffix: "_全书知识地图.md"
+    best_for: "第一轮阅读、快速导读、NotebookLM 结构化材料；用于先建立全书知识地图。"
+    infographic_prompt: "基于全书知识地图视角，展示全书中心问题、主干结构、章节功能、概念网络和文字版知识地图。信息图，中文。"
+    slide_prompt: "基于全书知识地图视角创建演示文稿，用导读方式呈现全书骨架、章节结构、核心概念和知识地图。"
+
+  causal:
+    number: "07"
+    label: "因果机制分析"
+    file: "model07-causal-mechanism.md"
+    suffix: "_因果机制分析.md"
+    best_for: "社会科学、经济、商业、历史、心理学、管理和政策类书籍；用于分析变量、因果链和反馈回路。"
+    infographic_prompt: "基于因果机制分析视角，展示核心结果变量、原因变量、因果链、反馈回路、中介变量和干预点。信息图，中文。"
+    slide_prompt: "基于因果机制分析视角创建演示文稿，围绕结果变量、原因变量、因果链、反馈回路和干预点展开。"
+
+  power:
+    number: "08"
+    label: "利益权力结构分析"
+    file: "model08-stakeholder-power-structure.md"
+    suffix: "_利益权力结构分析.md"
+    best_for: "政治、组织、商业、制度、社会议题类书籍；用于分析谁受益、谁受损、谁有权、谁被忽视。"
+    infographic_prompt: "基于利益相关者与权力结构视角，展示行动者、利益诉求、权力分布、冲突结构、激励机制和被遮蔽的人。信息图，中文。"
+    slide_prompt: "基于利益权力结构视角创建演示文稿，呈现行动者、利益诉求、权力分布、冲突结构和作者立场。"
+
+  concept:
+    number: "09"
+    label: "概念工程分析"
+    file: "model09-concept-engineering.md"
+    suffix: "_概念工程分析.md"
+    best_for: "哲学、心理学、传播学、管理学、社会科学等概念密集型书籍；用于分析作者如何定义、改造和替换概念。"
+    infographic_prompt: "基于概念工程视角，展示核心概念、定义差异、概念边界、概念关系、旧概念替换和概念工具箱。信息图，中文。"
+    slide_prompt: "基于概念工程视角创建演示文稿，围绕核心概念清单、概念边界、概念关系、概念收益和盲区展开。"
+
+  practice:
+    number: "10"
+    label: "实践转化方案"
+    file: "model10-practical-transformation.md"
+    suffix: "_实践转化方案.md"
+    best_for: "个人成长、管理、学习方法、创作方法、商业实践和决策方法类书籍；用于把书中思想转化为行动系统。"
+    infographic_prompt: "基于实践转化视角，展示本书可改变什么、核心原则、行动清单、决策检查表、练习题和 7 天实践计划。信息图，中文。"
+    slide_prompt: "基于实践转化视角创建演示文稿，呈现核心原则、行动清单、检查表、迁移场景、误用风险和 7 天计划。"
+
+  blindspot:
+    number: "11"
+    label: "盲区反向阅读"
+    file: "model11-blindspot-reverse-reading.md"
+    suffix: "_盲区反向阅读.md"
+    best_for: "任何需要批判性阅读的书，尤其是观点强烈、社会议题、商业畅销书；用于找出作者没说清楚、回避或简化的地方。"
+    infographic_prompt: "基于盲区与反向阅读视角，展示作者想让读者相信什么、未充分证明处、忽略反例、缺席者、价值立场和误读风险。信息图，中文。"
+    slide_prompt: "基于盲区反向阅读视角创建演示文稿，呈现作者核心主张、未证明处、反例、缺席者、价值立场和更公平版本。"
+
+title_hints:
+  "置身事内": [structure_quick, causal, power, blindspot]
+  "大国大城": [structure_quick, causal, power, blindspot]
+  "乡土中国": [structure_quick, concept, power, dialectic]
+  "娱乐至死": [structure_quick, concept, dialectic, blindspot]
+  "乌合之众": [structure_quick, bayes, dialectic, blindspot]
+  "原则": [structure_quick, concept, practice, blindspot]
+  "穷查理宝典": [structure_quick, concept, practice, bayes]
+  "影响力": [structure_quick, bayes, concept, practice]
+  "思考，快与慢": [structure_quick, bayes, concept, practice]
+  "枪炮、病菌与钢铁": [structure_quick, causal, axiom, blindspot]
+  "人类简史": [structure_quick, causal, dialectic, blindspot]
+  "资本论": [structure_quick, concept, causal, power, dialectic]
