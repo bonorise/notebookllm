@@ -14,22 +14,28 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **电子书目录**: `/Users/liubo/Desktop/Learning/reading/PDF/`（数据盘，每本书一个子目录）
 - **设计文档**: `DESIGN.md`（原始设计，产物类型已变更）
 - **实施计划**: `PLAN.md`（原始计划，子命令结构保留但产物逻辑已变更）
-- **Prompt 模板源**: `reading models/`（5 种分析框架的原始 prompt）
-- **Prompt 配置**: `prompts/reading_prompts.yaml`（已根据 5 个模型文件生成）
+- **Prompt 模板源**: `reading_models/`（11 种分析框架的原始 prompt，`.md` 文件）
+- **Prompt 配置**: `prompts/reading_prompts.yaml`（当前仅覆盖 5 个模型，待扩展）
 
 ## 阅读模型（Prompt 模板）
 
-`reading models/` 目录包含 5 种分析框架，作为 NotebookLM 生成时的 prompt 输入：
+`reading_models/` 目录包含 11 种分析框架，作为 NotebookLM 生成时的 prompt 输入：
 
-| 模型 | 文件 | 分析框架 | 适用场景 |
-|------|------|----------|----------|
-| 公理体系 | `model01-axiom.md` | 提取假设→确立公理→还原推导→审视结论 | 逻辑严密的论证型书籍 |
-| 贝叶斯推理 | `model02-bayes.md` | 先验信念→新证据→似然更新→后验评估 | 刷新认知、挑战共识的书籍 |
-| 学术拆解 | `model03-new.md` | 核心问题→旧范式→缺陷→新主张→对照→论证→延伸→局限 | 提出新理论/框架的学术著作 |
-| 第一性原理 | `model04-musk.md` | 识别核心命题→解构假设→回归基本事实→从零重建 | 需要打破惯例、重新思考的书籍 |
-| 黑格尔辩证法 | `model05-heiger.md` | 正题→反题→正反交锋→合题→辩证回望 | 内含矛盾张力的思辨型书籍 |
+| 编号 | 模型 | 文件 | 核心用途 |
+|------|------|------|----------|
+| 01 | 公理化逻辑审计 | `model01-axiom-logic-audit.md` | 审查作者论证是否严密（提取假设→确立公理→还原推导→审视结论） |
+| 02 | 贝叶斯认知更新 | `model02-bayesian-cognitive-update.md` | 判断读后应如何更新原有信念（先验→新证据→似然→后验） |
+| 03 | 全书结构地图 | `model03-book-structure-map.md` | 看清一本书的整体骨架和章节功能 |
+| 04 | 第一性原理重建 | `model04-first-principles-reconstruction.md` | 拆到底层事实后从零重建新框架 |
+| 05 | 黑格尔辩证思辨 | `model05-hegelian-dialectics.md` | 正题→反题→合题，分析深层张力 |
+| 06 | 全书结构地图(新版) | `model06-book-structure-map.md` | 快速建立全书知识地图，适合首轮阅读 |
+| 07 | 因果机制 | `model07-causal-mechanism.md` | 分析变量、因果链和反馈回路 |
+| 08 | 利益相关者与权力结构 | `model08-stakeholder-power-structure.md` | 谁受益、谁受损、谁有权、谁被忽视 |
+| 09 | 概念工程 | `model09-concept-engineering.md` | 分析作者如何定义、改造和替换概念 |
+| 10 | 实践转化 | `model10-practical-transformation.md` | 把书中思想转化为行动方案 |
+| 11 | 盲区与反向阅读 | `model11-blindspot-reverse-reading.md` | 找出作者没说清楚、回避或简化的地方 |
 
-这些模型与 DESIGN.md 中描述的 `prompts/reading_prompts.yaml` 是互补关系：yaml 文件做快速映射（书名→prompt_key），模型文件提供具体 prompt 内容。实施时可根据需要将模型内容整合到 YAML 中，或直接用模型文件路径引用。
+> **注意**: 当前 `batch_generate.py` 仍使用 5 模型（`MODEL_CONFIG` 定义的前5个 + `prompts/reading_prompts.yaml`），尚未整合 06-11 模型。新增模型需同步更新 `MODEL_CONFIG`、`prompts/reading_prompts.yaml` 和 SQLite schema。
 
 ## 架构
 
