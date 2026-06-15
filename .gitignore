@@ -6,3 +6,5 @@ books.db-shm
 books.db-wal
 *.pyc
 .claude/
+.cache/
+*.bak-*
