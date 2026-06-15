@@ -871,7 +871,6 @@ def cmd_mindmap(args: argparse.Namespace) -> None:
         print("📭 没有匹配的书。")
         conn.close()
         return
-    prompt = "请基于本书的目录、核心概念和论证结构，生成一份中文思维导图，突出章节层级、核心概念、因果关系和关键结论。"
     for row in rows:
         if interrupted:
             break
@@ -884,11 +883,11 @@ def cmd_mindmap(args: argparse.Namespace) -> None:
             print(f"⏭️  [{title}] 思维导图已存在，跳过")
             continue
         print(f"🧠 [{title}] 生成思维导图...", end=" ", flush=True)
-        rc, stdout, stderr = nblm_with_retry("generate", "mind-map", prompt, "--notebook", notebook_id, "--language", "zh_Hans", "--json", timeout=900)
+        rc, stdout, stderr = nblm_with_retry("generate", "mind-map", "--notebook", notebook_id, "--json", timeout=900)
         if rc != 0:
             print(f"❌ 生成失败: {stderr[:120] or stdout[:120]}")
             continue
-        rc, stdout, stderr = nblm("download", "mind-map", str(output_path), "--notebook", notebook_id, "--latest", "--format", "json", timeout=180)
+        rc, stdout, stderr = nblm("download", "mind-map", str(output_path), "--notebook", notebook_id, "--latest", timeout=180)
         print("✅" if rc == 0 else f"❌ 下载失败: {stderr[:100]}")
     conn.close()
 
